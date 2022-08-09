@@ -1,4 +1,4 @@
-# Rock paper scissors gane built using React
+# Rock paper scissors game built using React
 
 
 # Getting Started with Create React App
