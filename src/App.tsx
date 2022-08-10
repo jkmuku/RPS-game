@@ -1,126 +1,166 @@
-import { type } from "@testing-library/user-event/dist/type";
-import React, { useState, useEffect, ReactNode } from "react";
-import "./App.css";
-import Card from "./Card";
+import { type } from '@testing-library/user-event/dist/type';
+import React, { useState, useEffect, ReactNode } from 'react';
+import './App.css';
+import Card from './Card';
 
 interface Provider {
   type: any;
 }
 
+interface RoundResult {
+  roundNumber: number;
+  winner: string;
+  playerChoice: string;
+  computerChoice: string;
+  status: string;
+  playerScore: number;
+  computerScore: number;
+}
+
 function App() {
-  const [playerSelection, setPlayerSelection] = useState("");
-  const [computerSelection, setCompterSelection] = useState("");
+  const [playerSelection, setPlayerSelection] = useState('');
+  const [computerSelection, setCompterSelection] = useState('');
+
+  const [roundStatus, setRoundStatus] = useState('');
+
   const [gameStatus, setGameStatus] = useState(<div></div>);
-  const [gameWinner, setGameWinner] = useState("");
+  const [gameWinner, setGameWinner] = useState('');
+
+  const [round, setRound] = useState(0);
   const [playerScore, setPlayerScore] = useState(0);
   const [computerScore, setComputerScore] = useState(0);
-  const [round, setRound] = useState(0);
-  const [cardArrays, setCardArrays] = useState<any[]>([]);
-  const [gameOver, setGameOver] = useState("");
+
+  const [roundResults, setRoundResults] = useState<RoundResult[]>([]);
+
+  // const [cardArray, setCardArray] = useState<JSX.Element[]>([]);
+  const [roundWinner, setRoundWinner] = useState('');
+
+  const [gameOver, setGameOver] = useState('');
   const [table, setTable] = useState(<div></div>);
 
-  type Rps = "rock" | "paper" | "scissors";
-  function getWinner(playerSelection: Rps, computerSelection: Rps) {
-    console.log("round =", round);
-    setRound((prev) => prev + 1);
-    console.log("aftersetround =", round);
-    if (playerSelection == "rock") {
-      if (computerSelection == "rock") {
-        setGameStatus(<div className="tie-status">It's a tie</div>);
-      } else if (computerSelection == "paper") {
-        setGameStatus(<div className="comp-status">Computer wins</div>);
-        setComputerScore((prev) => prev + 1);
+  type Rps = 'rock' | 'paper' | 'scissors';
+  const MAX_ROUNDS = 3;
+
+  function onRoundComplete(roundResult: RoundResult) {
+    console.log('->> roundResult:', roundResult);
+
+    // check whether this is the last round. if yes, setGameOver to true.
+    if (round >= MAX_ROUNDS) {
+      // => game over.
+    } else {
+      //
+    }
+    // and call onGameComplete();
+  }
+
+  function onGameComplete() {
+    console.log('game over');
+  }
+
+  function playRound(playerChoice: Rps, computerChoice: Rps) {
+    // console.log('round(before):', round);
+    // setRound((prev) => prev + 1);
+    // console.log('round(after):', round);
+
+    console.log('playerChoice', playerChoice);
+    console.log('computerChoice', computerChoice);
+
+    let _round = round;
+    let _roundWinner = 'tie';
+    let _playerScore = playerScore;
+    let _computerScore = computerScore;
+    let _roundStatus = roundStatus;
+
+    if (playerChoice === 'rock') {
+      if (computerChoice === 'rock') {
+        _roundWinner = 'tie';
+        _roundStatus = "'It's a tie'";
+      } else if (computerChoice === 'paper') {
+        _roundWinner = 'computer';
+        _computerScore++;
+        _roundStatus = 'Computer wins';
       } else {
-        setGameStatus(<div className="play-status">Player wins</div>);
-        setPlayerScore((prev) => prev + 1);
+        _roundWinner = 'player';
+        _playerScore++;
+        _roundStatus = 'Player wins';
       }
-    } else if (playerSelection == "paper") {
-      if (computerSelection == "paper") {
-        setGameStatus(<div className="tie-status">It's a tie</div>);
-      } else if (computerSelection == "scissors") {
-        setGameStatus(<div className="comp-status">Computer wins</div>);
-        setComputerScore((prev) => prev + 1);
+    } else if (playerChoice === 'paper') {
+      if (computerChoice === 'paper') {
+        _roundWinner = 'tie';
+        _roundStatus = "It's a tie";
+      } else if (computerChoice === 'scissors') {
+        _roundWinner = 'computer';
+        _computerScore++;
+        _roundStatus = 'Computer wins';
       } else {
-        setGameStatus(<div className="play-status">Player wins</div>);
-        setPlayerScore((prev) => prev + 1);
+        _roundWinner = 'player';
+        _playerScore++;
+        _roundStatus = 'Player wins';
       }
     } else {
-      if (computerSelection == "scissors") {
-        setGameStatus(<div className="tie-status">It's a tie</div>);
-      } else if (computerSelection == "rock") {
-        setGameStatus(<div className="comp-status">Computer wins</div>);
-        setComputerScore((prev) => prev + 1);
+      if (computerChoice === 'scissors') {
+        _roundWinner = 'tie';
+        _roundStatus = "It's a tie";
+      } else if (computerChoice === 'rock') {
+        _roundWinner = 'computer';
+        _computerScore++;
+        _roundStatus = 'Computer wins';
       } else {
-        setGameStatus(<div className="play-status">Player wins</div>);
-        setPlayerScore((prev) => prev + 1);
+        _roundWinner = 'player';
+        _playerScore++;
+        _roundStatus = 'Player wins';
       }
     }
+
+    console.log('roundWinner:', _roundWinner);
+
+    if (_roundWinner !== 'tie') {
+      _round++;
+
+      setRound(_round);
+      setPlayerScore(_playerScore);
+      setComputerScore(_computerScore);
+
+      const roundResult: RoundResult = {
+        roundNumber: _round,
+        winner: _roundWinner,
+        playerChoice: playerChoice,
+        computerChoice: computerChoice,
+        playerScore: _playerScore,
+        computerScore: _computerScore,
+        status: _roundStatus
+      };
+
+      setRoundWinner(_roundWinner);
+
+      const _roundResults = [...roundResults, roundResult];
+      setRoundResults(_roundResults);
+      onRoundComplete(roundResult);
+    } else {
+      console.log('TIE. Sorry, you must have another go!');
+    }
   }
+
   function getComputerChoice(): Rps {
     let generateRandomNumber: number = Math.random() * 3;
     let generatedNumberToInteger: number = Math.floor(generateRandomNumber + 1);
     if (generatedNumberToInteger == 1) {
-      return "rock";
+      return 'rock';
     } else if (generatedNumberToInteger == 2) {
-      return "paper";
+      return 'paper';
     } else {
-      return "scissors";
+      return 'scissors';
     }
   }
+
   // const lists: JSX.Element[] = []
 
   function handleClick(e: any) {
-    let player: Rps = e.target.value;
-    setPlayerSelection(player);
-    let computer = getComputerChoice();
-    setCompterSelection(computer);
-    getWinner(player, computer);
-    setCardArrays((prev) => [...prev, card]);
-    if (round == 3) {
-      const buttons: NodeListOf<HTMLButtonElement> =
-        document.querySelectorAll("button");
-      buttons.forEach((elem) => {
-        elem.disabled = true;
-      });
-      setTable(
-        <div className="table-component">
-          <table>
-            <thead>
-              <tr>
-                <th>Your score</th>
-                <th>Computer score</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>{playerScore}</td>
-                <td>{computerScore}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      );
-      setGameOver("GAMEOVER!!!");
-      if (playerScore > computerScore) {
-        setGameWinner("PLAYER WINS!");
-      } else if (computerScore > playerScore) {
-        setGameWinner("COMPUTER WINS");
-      } else {
-        setGameWinner("IT'S A TIE!");
-      }
-    }
+    // todo - check if game is over. if yes, prevent function from proceeding.
+    let playerChoice: Rps = e.target.value;
+    let computerChoice = getComputerChoice();
+    playRound(playerChoice, computerChoice);
   }
-
-  let card = (
-    <Card
-      roundcard={round}
-      playercard={playerSelection}
-      computercard={computerSelection}
-      statuscard={gameStatus}
-      playerscorecard={playerScore}
-      computerscorecard={computerScore}
-    />
-  );
 
   return (
     <div className="app">
@@ -135,8 +175,17 @@ function App() {
         Scissors
       </button>
       <ul>
-        {cardArrays.map((cardArray) => (
-          <li key={Math.random() * 20}>{cardArray}</li>
+        {roundResults.map((result: RoundResult) => (
+          <li key={Math.random() * 20}>
+            <Card
+              computerScore={result.computerScore}
+              playerScore={result.playerScore}
+              playerChoice={result.playerChoice}
+              computerChoice={result.computerChoice}
+              round={result.roundNumber}
+              statusElement={<div>{result.status}</div>}
+            />
+          </li>
         ))}
       </ul>
       <div>{table}</div>

@@ -1,20 +1,27 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 import ReactDOM from 'react-dom';
 import props from 'prop-types';
- 
-const Card=(props:any)=>
-{
-    
-  return(
-    <div className='card'>
-        <h4>Round {props.roundcard}</h4>
-        <p>You selected: {props.playercard}</p>
-        <p>Computer selected: {props.computercard}</p>
-        {props.statuscard}
-        <p>Your score: {props.playerscorecard}</p>
-        <p>Computer score: {props.computerscorecard}</p>
-    </div>
-  )
+
+export interface CardProps {
+  round: number;
+  playerChoice: string;
+  computerChoice: string;
+  statusElement: JSX.Element;
+  playerScore: number;
+  computerScore: number;
 }
- 
+
+const Card: React.FC<CardProps> = (props) => {
+  return (
+    <div className="card">
+      <h4>Round {props.round}</h4>
+      <p>You selected: {props.playerChoice}</p>
+      <p>Computer selected: {props.computerChoice}</p>
+      {props.statusElement}
+      <p>Your score: {props.playerScore}</p>
+      <p>Computer score: {props.computerScore}</p>
+    </div>
+  );
+};
+
 export default Card;
