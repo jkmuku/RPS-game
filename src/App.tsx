@@ -17,14 +17,13 @@ function App() {
   const [round, setRound] = useState(0);
   const [cardArrays, setCardArrays] = useState<any[]>([]);
   const [gameOver, setGameOver] = useState("");
-  const [table, setTable] = useState(<div></div>)
-
+  const [table, setTable] = useState(<div></div>);
 
   type Rps = "rock" | "paper" | "scissors";
   function getWinner(playerSelection: Rps, computerSelection: Rps) {
-    console.log("round =", round)
+    console.log("round =", round);
     setRound((prev) => prev + 1);
-    console.log("aftersetround =", round)
+    console.log("aftersetround =", round);
     if (playerSelection == "rock") {
       if (computerSelection == "rock") {
         setGameStatus(<div className="tie-status">It's a tie</div>);
@@ -83,33 +82,35 @@ function App() {
       buttons.forEach((elem) => {
         elem.disabled = true;
       });
-      setTable(<div className="table-component">
-      <table>
-        <thead>
-          <tr>
-            <th>Your score</th>
-            <th>Computer score</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>{playerScore}</td>
-            <td>{computerScore}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>)
-      setGameOver("GAMEOVER!!!")
-      if (playerScore > computerScore){
-        setGameWinner("PLAYER WINS!")
-      }else if (computerScore > playerScore){
-        setGameWinner("COMPUTER WINS")
-      }else{
-        setGameWinner("IT'S A TIE!")
-      } 
+      setTable(
+        <div className="table-component">
+          <table>
+            <thead>
+              <tr>
+                <th>Your score</th>
+                <th>Computer score</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{playerScore}</td>
+                <td>{computerScore}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      );
+      setGameOver("GAMEOVER!!!");
+      if (playerScore > computerScore) {
+        setGameWinner("PLAYER WINS!");
+      } else if (computerScore > playerScore) {
+        setGameWinner("COMPUTER WINS");
+      } else {
+        setGameWinner("IT'S A TIE!");
+      }
     }
   }
-  
+
   let card = (
     <Card
       roundcard={round}
