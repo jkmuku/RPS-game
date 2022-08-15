@@ -3,38 +3,65 @@
 }
 .app {
  text-align: center;
+ font-family: Arial, Helvetica, sans-serif;
 }
 
 div.card {
-  background-color: rgb(245, 241, 241);
+  background-color: #EEEEEE;
   text-align: left;
   border-radius: 5%;
   margin: 10px auto;
   list-style-type: none;
-  border: 1px solid red;
-  height: 30vh;
-  width: 30vw;
-  padding: 1em;
+  height: 22vh;
+  width: 372px;
+  padding-top: 1em;
+  padding-bottom: 1em;
+  padding-left: 2.2em;
 
 }
+
 ul{
   list-style-type: none;
 }
+
 table, th, td {
   margin: 10px auto;
-  border: 1px solid black;
+  border: 1px solid #CCCCCC;
+  border-collapse: collapse;
+  width: 34%;
+  padding: 5px;
 }
-.play-status{
-  color: green;
+
+th{
+  background-color: #EEEEEE;
+  font-weight: 900;
 }
-.comp-status{
-  color: red;
+
+div.card > p {
+  margin-bottom: 3px;
+  padding-bottom: 0;
+  margin-top: 3px;
 }
-.tie-status{
-  color: orange;
+
+div.card > p.score, .status{
+  font-weight:bolder;
 }
-/* .card:first-of-type {
-  display: none;
-} */
+
+p{
+  font-size: 20px;
+}
+
+#round {
+  font-size: 30px;
+  font-weight: 900;
+}
+
+div.game-over, div.game-winner{
+  font-size: 35px;
+  font-weight: 900;
+}
+
+
+
 
 

@@ -14,12 +14,12 @@ export interface CardProps {
 const Card: React.FC<CardProps> = (props) => {
   return (
     <div className="card">
-      <h4>Round {props.round}</h4>
+      <p id='round'>ROUND {props.round}</p>
       <p>You selected: {props.playerChoice}</p>
       <p>Computer selected: {props.computerChoice}</p>
       {props.statusElement}
-      <p>Your score: {props.playerScore}</p>
-      <p>Computer score: {props.computerScore}</p>
+      <p className='score'>Your score: {props.playerScore}</p>
+      <p className='score'>Computer score: {props.computerScore}</p>
     </div>
   );
 };
